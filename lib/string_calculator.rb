@@ -1,8 +1,15 @@
 class StringCalculator
-  def self.add(input)
-    return 0 if input.empty?
-    return input.to_i if input !~ /[,|\n]/
+  def self.add(numbers)
+    return 0 if numbers.empty?
 
-    input.split(/,|\n/).map(&:to_i).sum
+    delimiter = /,|\n/
+    if numbers.start_with?("//")
+      delimiter_line, numbers = numbers.split("\n", 2)
+      custom_delimiter = delimiter_line[2..]
+      delimiter = Regexp.new(Regexp.escape(custom_delimiter))
+    end
+
+    parts = numbers.split(delimiter).map(&:to_i)
+    parts.sum
   end
 end
